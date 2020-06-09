@@ -4,174 +4,158 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    public float CameraMoveSpeed;
-    public GameObject CameraFollowObj;
-    public float clampAngle;
-    public float inputSensitivity;
-    private float rotY = 0.0f;
-    private float rotX = 0.0f;
-
-    public Vector3 startPos;
-    public Quaternion startRot;
-    public bool turning;
-    public float lerpSpeed;
-
-    // Use this for initialization
-    void Start()
+    #region Singleton
+    public static FollowCamera instance;
+    private void Awake()
     {
-        startPos = transform.position;
-        startRot = transform.rotation;
-
-        Vector3 rot = transform.localRotation.eulerAngles;
-        rotY = rot.y;
-        rotX = rot.x;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        if (instance != null)
         {
-            turning = true;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            turning = false;
-        }
-
-        if (turning)
-        {
-            rotY += Input.GetAxis("Mouse X") * inputSensitivity * Time.deltaTime;
-            rotX += Input.GetAxis("Mouse Y") * inputSensitivity * Time.deltaTime;
-            rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
-
-            Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
-            transform.rotation = localRotation;
+            Debug.LogError("Multiple Cameras Exist!");
+            Destroy(gameObject);
         }
         else
         {
-           // Debug.Log(transform.forward);
-            //transform.position = Vector3.Lerp(transform.position, startPos, lerpSpeed * Time.deltaTime);
+            instance = this;
         }
+    }
+    #endregion Singleton
+
+    // Player & Attributes
+    private Transform target;
+    private float targetHeight;
+    // Rotate Speeds
+    private float xSpeed = 250.0f;
+    private float ySpeed = 120.0f;
+    // Y Angle Limits
+    private int yMinLimit = -60;
+    private int yMaxLimit = 60;
+    // Zoom Speed
+    private int zoomRate = 40;
+    // Damping Rot & Xoom
+    private float rotationDampening = 3.0f;
+    private float zoomDampening = 5.0f;
+    // Calculating Angles
+    private float x = 0.0f;
+    private float y = 0.0f;
+    // Calculating Distance
+    private float currentDistance;
+    private float desiredDistance;
+    private float correctedDistance;
+
+    [Header("Follow Distance")]
+    public float minDistance = .6f;
+    public float maxDistance = 20;
+    [Header("Ease Timer")]
+    public float timer = 0.0f;
+
+    void Start()
+    {
+        // Singletons
+        if (!Player.instance)
+        {
+            Debug.LogError("Player Instance is Missing from Camera!");
+        }
+        else
+        {
+            target = Player.instance.gameObject.transform;
+            targetHeight = target.GetComponent<Collider>().bounds.extents.y / 2;
+        }
+        // Get Starting Properties
+        Vector3 angles = transform.eulerAngles;
+        x = angles.y;
+        y = angles.x;
+        float distance = (minDistance + maxDistance) / 3.0f;
+        currentDistance = distance;
+        desiredDistance = distance;
+        correctedDistance = distance;
     }
 
     void LateUpdate()
     {
-        // set the target object to follow
-        Transform target = CameraFollowObj.transform;
-
-        //move towards the game object that is the target
-        float step = CameraMoveSpeed * Time.deltaTime;
-
-        transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-
-        if (!turning)
+        if (timer > 0.0f)
         {
-            transform.position = Vector3.Lerp(transform.position, startPos, lerpSpeed * Time.deltaTime);
+            timer -= Time.deltaTime;
         }
+
+        // Get Mouse Axis
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        {
+            x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+            y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+            
+            timer = 1.5f;
+            if (Input.GetMouseButton(1))
+            {
+                target.transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+            }
+        }
+        // Ease on Movement
+        else if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0 || timer <= 0.0f)
+        {
+            float targetRotationAngle = target.eulerAngles.y;
+            float currentRotationAngle = transform.eulerAngles.y;
+            x = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
+        }
+        // Clamp Y Rotation
+        y = ClampAngle(y, yMinLimit, yMaxLimit);
+        // Set Camera Rotation
+        Quaternion rotation = Quaternion.Euler(y, x, 0);
+
+        // Calculate Desired Distance
+        desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
+        desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
+        correctedDistance = desiredDistance;
+
+        // Calculate Desired Position
+        Vector3 position = target.position - (rotation * Vector3.forward * desiredDistance + new Vector3(0, -targetHeight, 0));
+
+        // Check for Collision using the Target's Desired Registration Point as set by user using height
+        RaycastHit collisionHit;
+        Vector3 targetPos = new Vector3(target.position.x, target.position.y + targetHeight, target.position.z);
+
+        bool isCorrected = false;
+        // Check for Collision between Character & Camera
+        if (Physics.Linecast(targetPos, position, out collisionHit))
+        {
+            // If so, get Distance between Character & Colliding Object
+            if (collisionHit.transform != target)
+            {
+                transform.position = collisionHit.point;
+                correctedDistance = Vector3.Distance(targetPos, collisionHit.point);
+                correctedDistance *= 0.80f;
+            }
+            isCorrected = true;
+        }
+        // If there was a Collision - Snap
+        if (isCorrected)
+        {
+            currentDistance = Mathf.Lerp(currentDistance, correctedDistance, Time.deltaTime * zoomDampening);
+        }
+        // Else usual Lerp
+        else
+        {
+            currentDistance = correctedDistance;
+        }
+
+        // Calc pos w/ new currentDistance
+        position = target.position - (rotation * Vector3.forward * currentDistance + new Vector3(0, -targetHeight, 0));
+
+        // Set Position & Rotation
+        transform.rotation = rotation;
+        transform.position = position;
     }
 
-
-    //private Transform target;
-    //private Vector3 target_Offset = new Vector3(-3.46f, 2.26f, 3.02f);
-    //public float smoothFactor;
-
-    //private Vector3 upVector = new Vector3(0.0f, 1.0f, 0.0f);
-    //public bool turning = true;
-    //public float lerpSpeed;
-    //public Vector3 forwardVec;
-    //public bool colliding;
-
-    //private void Start()
-    //{
-    //    // Singleton
-    //    if (!PlayerTargeting.instance)
-    //    {
-    //        Debug.LogError("Player Targeting Instance is Missing in Camera!");
-    //    }
-    //    // Swap this for a Player Reference later.
-    //    target = PlayerTargeting.instance.gameObject.transform;
-
-    //    forwardVec = transform.forward;
-    //}
-    //void Update()
-    //{
-    //    // Update Camera Position
-    //    //transform.position = target.position + target_Offset;
-
-    //    if (Input.GetMouseButtonDown(0))
-    //    {
-    //        turning = true;
-    //    }
-    //    if (Input.GetMouseButtonUp(0))
-    //    {
-    //        turning = false;
-    //    }
-    //    // Rotate Around World Up
-    //    /*if (turning)
-    //    {
-    //        if (Input.GetAxis("Mouse X") < 0)
-    //        {
-    //            transform.RotateAround(transform.position, upVector, -1.0f);
-    //        }
-    //        if (Input.GetAxis("Mouse X") > 0)
-    //        {
-    //            transform.RotateAround(transform.position, upVector, 1.0f);
-    //        }
-
-    //        if (Input.GetAxis("Mouse Y") < 0)
-    //        {
-    //            transform.RotateAround(transform.position, transform.right, 1.0f);
-    //        }
-    //        if (Input.GetAxis("Mouse Y") > 0)
-    //        {
-    //            transform.RotateAround(transform.position, transform.right, -1.0f);
-    //        }
-    //    }
-    //    // Lerp back to Character Forward
-    //    else
-    //    {
-    //       // Debug.Log(transform.forward);
-    //        transform.forward = Vector3.Lerp(transform.forward, forwardVec, lerpSpeed * Time.deltaTime);
-    //    }*/
-    //    float heightOffset = 0;
-
-    //    if (turning)
-    //    {
-    //        heightOffset = -1 * Input.GetAxis("Mouse Y");
-
-    //        Vector3 camHeightOffset = new Vector3(0.0f, heightOffset, 0.0f);
-
-    //        Quaternion camTurnAngle = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * lerpSpeed, Vector3.up);
-    //        target_Offset = camTurnAngle * target_Offset + camHeightOffset;       
-    //    }
-
-    //    Vector3 newPos = target.position + target_Offset;
-
-    //    RaycastHit hit;
-    //    float distance = Vector3.Distance(newPos, target.position);
-    //    if (Physics.Raycast(newPos, transform.forward, out hit, distance * 100))
-    //    {
-    //        if (hit.collider.gameObject.tag == "Environment")
-    //        {
-    //            Debug.Log("hit environment");
-    //        }
-    //        else
-    //        {
-    //            transform.position = Vector3.Slerp(transform.position, newPos, smoothFactor);
-    //        }
-    //    }
-
-
-
-
-
-
-
-    //    transform.LookAt(target.position);
-    //}
-
-
+    private static float ClampAngle(float angle, float min, float max)
+    {
+        // Clamp Camera Angles
+        if (angle < -360)
+        {
+            angle += 360;
+        }
+        if (angle > 360)
+        { 
+            angle -= 360;
+        }
+        return (Mathf.Clamp(angle, min, max));
+    }
 }

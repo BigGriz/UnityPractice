@@ -8,25 +8,25 @@ public class TargetHighlight : MonoBehaviour
     private Vector3 offset;
     private MeshRenderer meshRenderer;
     private PlayerTargeting player;
+    private FollowCamera followCam;
     [HideInInspector] public GameObject target;
 
+    #region Setup
     private void Start()
     {
-        // Singletons
-        if (PlayerTargeting.instance != null)
-        {
-            player = PlayerTargeting.instance;
-        }
-        else
-        {
-            Debug.Log("No Player Targeting Instance found in Target Highlighter");
-        }
         // Setup
+        player = Player.instance.targeting;
+        followCam = FollowCamera.instance;
         meshRenderer = GetComponent<MeshRenderer>();
     }
+    #endregion Setup
 
     private void Update()
     {
+        // Face Camera
+        Vector3 dir = followCam.transform.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(dir) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
+
         // Check if Target still in Range
         if (CheckDistance())
         {

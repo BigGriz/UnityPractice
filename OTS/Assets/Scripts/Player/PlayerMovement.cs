@@ -4,31 +4,59 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float movementSpeed;
-
-    // Start is called before the first frame update
-    void Start()
+    #region Setup
+    private CharacterController controller;
+    private Player player;
+    private float movementSpeed;
+    private void Awake()
     {
+        controller = GetComponent<CharacterController>();
     }
+    private void Start()
+    {
+        player = Player.instance;
+        movementSpeed = player.movementSpeed;
+    }
+    #endregion Setup
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        // Update to when gear Change
+        UpdateMoveSpeed();
+        // Get Key Input & Move
+        controller.Move(GetDirection() * Time.deltaTime * movementSpeed);
+    }
+
+    // Update MS
+    public void UpdateMoveSpeed()
+    {
+        movementSpeed = player.movementSpeed;
+    }
+
+    // Get Character Direction
+    Vector3 GetDirection()
+    {
+        // Reset Direction
+        Vector3 direction = Vector3.zero;
+        // Key Inputs
+        if (Input.GetKey(KeyCode.W) || (Input.GetMouseButton(0) && Input.GetMouseButton(1)))
         {
-            transform.position += transform.TransformDirection(Vector3.forward) * Time.deltaTime * movementSpeed;
+            direction += transform.forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position -= transform.TransformDirection(Vector3.forward) * Time.deltaTime * movementSpeed;
+            direction += -transform.forward;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += transform.TransformDirection(Vector3.left) * Time.deltaTime * movementSpeed;
+            direction -= transform.right;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.position -= transform.TransformDirection(Vector3.left) * Time.deltaTime * movementSpeed;
+            direction += transform.right;
         }
+        // Get Angle
+        return(direction.normalized);
     }
 }

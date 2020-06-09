@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerTargeting : MonoBehaviour
 {
     [Header("Setup")]
-    public float targetRange;
+    [HideInInspector] public float targetRange;
+    private FollowCamera followCam;
     public Color color;   
     [Header("Current Target")]
     public GameObject target;
@@ -14,29 +15,25 @@ public class PlayerTargeting : MonoBehaviour
     private SphereCollider sphereCollider;
     private TargetHighlight targetGraphic;
 
-    #region Singleton
-    public static PlayerTargeting instance;
+    #region Setup
     private void Awake()
     {   
-        // Singleton
-        if (PlayerTargeting.instance != null)
-        {
-            Debug.LogError("Player Targeting Instance already Exists!");
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            instance = this;
-        }
         // Setup
         sphereCollider = GetComponent<SphereCollider>();
-        sphereCollider.radius = targetRange;
         targetGraphic = GetComponentInChildren<TargetHighlight>();
     }
-    #endregion Singleton
+    private void Start()
+    {
+        followCam = FollowCamera.instance;
+        targetRange = Player.instance.range;
+        sphereCollider.radius = targetRange;
+    }
+    #endregion Setup
 
     private void Update()
     {
+        // Update to when gear Change
+        UpdateRange();
         // Check for Targets
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -44,15 +41,6 @@ public class PlayerTargeting : MonoBehaviour
         }
         // Set to Match Targeting
         target = targetGraphic.target;
-
-       /*if (Input.GetAxis("Mouse X") < 0)
-        {
-            transform.Rotate(Vector3.up * 5.0f);
-        }
-        if (Input.GetAxis("Mouse X") > 0)
-        {
-            transform.Rotate(Vector3.up * -5.0f);
-        }*/
     }
 
     // Get Target if Possible
@@ -67,12 +55,29 @@ public class PlayerTargeting : MonoBehaviour
                 // Check not on Current Target
                 if (targetGraphic.target != enemies[i])
                 {
-                    // Set to Target
-                    targetGraphic.NewTarget(enemies[i]);                 
-                    return;
+                    if (enemies[i].GetComponent<Enemy>().isVisible)
+                    {
+                        RaycastHit hit;
+                        if (Physics.Raycast(followCam.transform.position, enemies[i].transform.position - followCam.transform.position, out hit, Mathf.Infinity))
+                        {
+                            if (hit.collider.gameObject == enemies[i].gameObject)
+                            {
+                                // Set to Target
+                                targetGraphic.NewTarget(enemies[i]);
+                                return;
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    // Update Range
+    void UpdateRange()
+    {
+        targetRange = Player.instance.range;
+        sphereCollider.radius = targetRange;
     }
 
     // Draw Targeting Range
