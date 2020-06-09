@@ -54,15 +54,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11752}
     - Class: 114
-      Script: {instanceID: 12014}
+      Script: {instanceID: 11768}
     - Class: 114
-      Script: {instanceID: 12236}
+      Script: {instanceID: 12016}
+    - Class: 114
+      Script: {instanceID: 12238}
     - Class: 114
       Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 23752}
-    - Class: 114
-      Script: {instanceID: 24922}
+      Script: {instanceID: 13506}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -108,6 +108,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TargetHighlight
+  - hash:
+      serializedVersion: 2
+      Hash: 8cebdb29ba3205a7616a91a84333cd03
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Enemy
   - hash:
       serializedVersion: 2
       Hash: e7a73f5f78ba6445195ec23b74a1ce2d
@@ -428,6 +434,12 @@ ScriptsOnlyBuild:
     className: TMP_StyleSheet
   - hash:
       serializedVersion: 2
+      Hash: 242d3ec7349ea67e92531e3bde0f984f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Player
+  - hash:
+      serializedVersion: 2
       Hash: d3b88a68e59633f91953413bb8bdfe0e
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -522,18 +534,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 242d3ec7349ea67e92531e3bde0f984f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Player
-  - hash:
-      serializedVersion: 2
-      Hash: 9419f5b5d2c8fddab6513b5e470324be
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Enemy
   platform: 5
   scenePathNames:
   - Assets/Scenes/Test.unity

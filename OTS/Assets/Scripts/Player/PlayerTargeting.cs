@@ -39,6 +39,18 @@ public class PlayerTargeting : MonoBehaviour
         {
             GetTarget();
         }
+        if (Input.GetMouseButton(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.gameObject.GetComponent<Enemy>())
+                {
+                    targetGraphic.NewTarget(hit.collider.gameObject);
+                }
+            }
+        }
         // Set to Match Targeting
         target = targetGraphic.target;
     }

@@ -7,9 +7,12 @@ public class Player : MonoBehaviour
     public static Player instance;
     [HideInInspector] public PlayerTargeting targeting;
     [HideInInspector] public PlayerMovement movement;
+
     [Header("Player Stats")]
     public float movementSpeed;
     public float range;
+    public GameObject prefab;
+
 
     private void Awake()
     {
@@ -26,5 +29,18 @@ public class Player : MonoBehaviour
 
         targeting = GetComponent<PlayerTargeting>();
         movement = GetComponent<PlayerMovement>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            UseAbility();
+        }
+    }
+
+    void UseAbility()
+    {
+        GameObject temp = Instantiate(prefab, transform.position, transform.rotation);
     }
 }
