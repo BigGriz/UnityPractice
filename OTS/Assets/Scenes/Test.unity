@@ -551,7 +551,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   movementSpeed: 40
   range: 30
-  prefab: {fileID: 0}
+  prefab: {fileID: 5778522320898475606, guid: 22925cc3564729342a38efa82819a55e, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
