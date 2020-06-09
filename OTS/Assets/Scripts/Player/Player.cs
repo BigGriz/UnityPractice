@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public PlayerTargeting targeting;
     [HideInInspector] public PlayerMovement movement;
 
+    public AbilityBar abilityBar;
+
     [Header("Player Stats")]
     public float movementSpeed;
     public float range;
@@ -33,39 +35,28 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Shoot a Projectile
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            UseAbility();
-        }
+        // Check for Keys
+        GetAbilityKeys();
     }
 
     // Use Ability
-    void UseAbility()
+    void UseAbility(int _slot)
     {
-        // Check for Line of Sight
-        if (CheckLOS())
-        {
-            Projectile temp = Instantiate(prefab, transform.position, transform.rotation).GetComponent<Projectile>();
-            temp.Seek(targeting.target);
-        }
+        abilityBar.actionBar[_slot].GetComponent<Ability>().UseAbility();
     }
 
-    bool CheckLOS()
+    // Check Num Keys
+    public void GetAbilityKeys()
     {
-        // Grab all Objects between Target & Self
-        RaycastHit[] hits;
-        hits = Physics.RaycastAll(transform.position, targeting.target.transform.position - transform.position, Mathf.Infinity);
-        // Check if any are Environmental/Blocking
-        for (int i = 0; i < hits.Length; i++)
+        for (int number = 0; number <= 9; number++)
         {
-            // If so Return False
-            if (hits[i].collider.gameObject.tag == "Environment")
+            if (Input.GetKeyDown(number.ToString()))
             {
-               return (false);
+                UseAbility(number - 1);
+                return;
             }
         }
-        // Else have LOS
-        return (true);
+
+        return;
     }
 }
