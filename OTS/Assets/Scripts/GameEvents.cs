@@ -94,21 +94,12 @@ public class GameEvents : MonoBehaviour
         }
     }
     // Change this to all Menus?
-    public event Action toggleSpellBook;
-    public void ToggleSpellBook()
+    public event Action<KeyCode> toggleMenu;
+    public void ToggleMenu(KeyCode _key)
     {
-        if (toggleSpellBook != null)
+        if (toggleMenu != null)
         {
-            toggleSpellBook();
+            toggleMenu(_key);
         }
     }
-    public event Action closeSpellBook;
-    public void CloseSpellBook()
-    {
-        if (closeSpellBook != null)
-        {
-            closeSpellBook();
-        }
-    }
-
 }

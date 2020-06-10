@@ -68,13 +68,18 @@ public class Player : MonoBehaviour
         }
         return;
     }
-
+    // Check all Keys
     public void GetHotKeys()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        // Get all KeyStates
+        foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
         {
-            // Use Ability
-            GameEvents.instance.ToggleSpellBook();
+            // Check which Pressed this Frame
+            if (Input.GetKeyDown(vKey))
+            {
+                // Toggle Menu if Appropriate
+                GameEvents.instance.ToggleMenu(vKey);
+            }
         }
     }
 }

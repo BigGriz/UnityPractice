@@ -6,6 +6,7 @@ public class MiddleUI : MonoBehaviour
 {
     // Change this to all Tabs in Future
     public GameObject spellBook;
+    public GameObject character;
 
     #region Setup
     private void Start()
@@ -13,26 +14,31 @@ public class MiddleUI : MonoBehaviour
         // UI Elements
         spellBook.SetActive(false);
         // Setup Callbacks
-        GameEvents.instance.toggleSpellBook += ToggleSpellBook;
-        GameEvents.instance.closeSpellBook += CloseSpellBook;
+        GameEvents.instance.toggleMenu += ToggleMenu;
     }
 
     private void OnDestroy()
     {
         // Cleanup Callbacks
-        GameEvents.instance.toggleSpellBook -= ToggleSpellBook;
-        GameEvents.instance.closeSpellBook -= CloseSpellBook;
+        GameEvents.instance.toggleMenu -= ToggleMenu;
     }
     #endregion Setup
 
     // Toggle UI Element in Future
-    public void ToggleSpellBook()
+    public void ToggleMenu(KeyCode _key)
     {
-        spellBook.SetActive(!spellBook.activeSelf);
+        if (_key == KeyCode.P)
+        {
+            spellBook.SetActive(!spellBook.activeSelf);
+        }
+        if (_key == KeyCode.C)
+        {
+            character.SetActive(!character.activeSelf);
+        }
     }
-
-    public void CloseSpellBook()
+    // Buttons
+    public void CloseMenu(GameObject _menu)
     {
-        spellBook.SetActive(false);
+        _menu.SetActive(false);
     }
 }
