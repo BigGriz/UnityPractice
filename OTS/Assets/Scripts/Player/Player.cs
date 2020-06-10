@@ -34,8 +34,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Check for Keys
+        // Check for Abilities
         GetAbilityKeys();
+        // Check for Hotkeys
+        GetHotKeys();
+
     }
 
     // Check Num Keys
@@ -51,5 +54,14 @@ public class Player : MonoBehaviour
             }
         }
         return;
+    }
+
+    public void GetHotKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            // Use Ability
+            GameEvents.instance.ToggleSpellBook();
+        }
     }
 }

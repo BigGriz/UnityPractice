@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameEvents : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class GameEvents : MonoBehaviour
     }
     #endregion Setup
 
+    public AbilitySlot mouseOver;
+
     // Enemy is Targeted
     public event Action<Enemy> onGetTarget;
     public void OnGetTarget(Enemy _enemy)
@@ -64,4 +67,49 @@ public class GameEvents : MonoBehaviour
             useAbility(_id, player.targeting.target);
         }
     }
+    // Sets Cooldowns
+    public event Action<string> setCooldowns;
+    public void SetCooldowns(string _name)
+    {
+        if (setCooldowns != null)
+        {
+            setCooldowns(_name);
+        }
+    }
+    // Ability Dragged to Bar
+    public event Action<int, GameObject> setAbility;
+    public void SetAbility(GameObject _ability)
+    {
+        if (setAbility != null && mouseOver != null)
+        {
+            setAbility(mouseOver.id, _ability);
+        }
+    }
+    // Ability Dragged off Bar
+    public event Action<int> clearAbility;
+    public void ClearAbility(int _id)
+    {
+        if (clearAbility != null)
+        {
+            clearAbility(_id);
+        }
+    }
+    // Change this to all Menus?
+    public event Action toggleSpellBook;
+    public void ToggleSpellBook()
+    {
+        if (toggleSpellBook != null)
+        {
+            toggleSpellBook();
+        }
+    }
+    public event Action closeSpellBook;
+    public void CloseSpellBook()
+    {
+        if (closeSpellBook != null)
+        {
+            closeSpellBook();
+        }
+    }
+
 }

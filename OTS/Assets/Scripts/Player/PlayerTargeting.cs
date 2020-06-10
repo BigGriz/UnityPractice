@@ -31,14 +31,13 @@ public class PlayerTargeting : MonoBehaviour
     #endregion Setup
 
     private void Update()
-    {
-        
+    {        
         // Check for Targets
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             GetTarget();
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -48,6 +47,7 @@ public class PlayerTargeting : MonoBehaviour
                 {
                     targetGraphic.NewTarget(hit.collider.gameObject);
                     GameEvents.instance.OnGetTarget(hit.collider.gameObject.GetComponent<Enemy>());
+                    followCam.rotating = false;
                 }
             }
         }

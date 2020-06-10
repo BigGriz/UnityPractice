@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.EventSystems;
 
 public class FollowCamera : MonoBehaviour
 {
@@ -48,6 +50,8 @@ public class FollowCamera : MonoBehaviour
     [Header("Ease Timer")]
     public float timer = 0.0f;
 
+    public bool rotating;
+
     void Start()
     {
         // Singletons
@@ -77,17 +81,31 @@ public class FollowCamera : MonoBehaviour
             timer -= Time.deltaTime;
         }
 
-        // Get Mouse Axis
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
-            x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-            y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-            
-            timer = 1.5f;
-            if (Input.GetMouseButton(1))
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                target.transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+                rotating = true;
             }
+        }
+        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+        {
+            rotating = false;
+        }
+        // Get Mouse Axis
+        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && rotating)
+        {
+
+                x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+                y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+
+                timer = 1.5f;
+
+                if (Input.GetMouseButton(1))
+                {
+                    target.transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+                }
+            
         }
         // Ease on Movement
         else if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0 || timer <= 0.0f)
