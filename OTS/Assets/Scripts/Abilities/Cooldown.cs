@@ -8,6 +8,7 @@ public class Cooldown : MonoBehaviour
     [HideInInspector] public float cooldownTimer = 0;
     [HideInInspector] public float cooldown = 0;
     private Image imageCooldown;
+    public bool ready = false;
 
     void Awake()
     {
@@ -18,16 +19,22 @@ public class Cooldown : MonoBehaviour
     {
         cooldownTimer -= Time.deltaTime;       
         imageCooldown.fillAmount = cooldownTimer / cooldown;
+
+        if (cooldownTimer <= 0.0f)
+        {
+            ready = true;
+        }
     }
 
     public void Begin(float _timer)
     {
+        ready = false;
         cooldown = _timer;
         cooldownTimer = cooldown;
     }
 
     public bool Ready()
     {
-        return (cooldownTimer <= 0.0f);
+        return (ready);
     }
 }

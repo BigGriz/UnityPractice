@@ -45,6 +45,8 @@ public class Projectile : MonoBehaviour
         // Target still Alive
         else
         {
+            transform.LookAt(target.transform);
+
             // Get Direction & Find Movement
             Vector3 dir = target.position - transform.position;
             float distanceThisFrame = projectileSpeed * Time.deltaTime;

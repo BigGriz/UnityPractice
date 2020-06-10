@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [Tooltip("For LoS Checks")]
     public bool isVisible;
 
     // Start is called before the first frame update
