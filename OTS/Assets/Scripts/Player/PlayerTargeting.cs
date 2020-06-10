@@ -25,15 +25,14 @@ public class PlayerTargeting : MonoBehaviour
     private void Start()
     {
         followCam = FollowCamera.instance;
-        targetRange = Player.instance.range;
-        sphereCollider.radius = targetRange;
+        // Update When Gear Change in Future
+        UpdateRange();
     }
     #endregion Setup
 
     private void Update()
     {
-        // Update to when gear Change
-        UpdateRange();
+        
         // Check for Targets
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -48,6 +47,7 @@ public class PlayerTargeting : MonoBehaviour
                 if (hit.collider.gameObject.GetComponent<Enemy>())
                 {
                     targetGraphic.NewTarget(hit.collider.gameObject);
+                    GameEvents.instance.OnGetTarget(hit.collider.gameObject.GetComponent<Enemy>());
                 }
             }
         }
@@ -76,6 +76,8 @@ public class PlayerTargeting : MonoBehaviour
                             {
                                 // Set to Target
                                 targetGraphic.NewTarget(enemies[i]);
+                                target = targetGraphic.target;
+                                GameEvents.instance.OnGetTarget(target.GetComponent<Enemy>());
                                 return;
                             }
                         }
@@ -115,6 +117,7 @@ public class PlayerTargeting : MonoBehaviour
         if (target == other)
         {
             target = null;
+            GameEvents.instance.OnLoseTarget();
         }
         // Remove from List
         enemies.Remove(other.gameObject);

@@ -1,12 +1,18 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - Ability
+    - AbilityBar
+    - Cooldown
     - Enemy
+    - EnemyUI
     - FollowCamera
     - Player
     - PlayerMovement
     - PlayerTargeting
+    - Projectile
     - TargetHighlight
+    - TopUI
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.Graphs.dll:
@@ -19,6 +25,13 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
+    UnityEngine.UI.dll:
+    - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.StandaloneInputModule
+    - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.GraphicRaycaster
+    - UnityEngine.UI.HorizontalLayoutGroup
+    - UnityEngine.UI.Image
   sceneClasses:
     Assets/Scenes/Test.unity:
     - Class: 1
@@ -52,17 +65,41 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11654}
+    - Class: 114
       Script: {instanceID: 11752}
     - Class: 114
       Script: {instanceID: 11768}
     - Class: 114
+      Script: {instanceID: 11874}
+    - Class: 114
       Script: {instanceID: 12016}
     - Class: 114
-      Script: {instanceID: 12238}
+      Script: {instanceID: 12172}
     - Class: 114
-      Script: {instanceID: 13242}
+      Script: {instanceID: 12240}
     - Class: 114
-      Script: {instanceID: 13506}
+      Script: {instanceID: 12314}
+    - Class: 114
+      Script: {instanceID: 13006}
+    - Class: 114
+      Script: {instanceID: 13208}
+    - Class: 114
+      Script: {instanceID: 13248}
+    - Class: 114
+      Script: {instanceID: 13300}
+    - Class: 114
+      Script: {instanceID: 13462}
+    - Class: 114
+      Script: {instanceID: 13514}
+    - Class: 114
+      Script: {instanceID: 13578}
+    - Class: 114
+      Script: {instanceID: 13686}
+    - Class: 114
+      Script: {instanceID: 24934}
+    - Class: 114
+      Script: {instanceID: 28516}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -74,6 +111,18 @@ ScriptsOnlyBuild:
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 198
+      Script: {instanceID: 0}
+    - Class: 199
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     - Class: 850595691
       Script: {instanceID: 0}
@@ -110,7 +159,7 @@ ScriptsOnlyBuild:
     className: TargetHighlight
   - hash:
       serializedVersion: 2
-      Hash: 8cebdb29ba3205a7616a91a84333cd03
+      Hash: 5a9c54823044e09df526085b3e5008eb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Enemy
@@ -240,6 +289,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: AnimationPlayableAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 112fb75312a0652877ba5f0fec081c07
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Projectile
   - hash:
       serializedVersion: 2
       Hash: aba7b2852ef61d175dd9602e7723d5e5
@@ -392,6 +447,12 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
+      Hash: c80aa20e04c026e0196d1e1644bf27e3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Ability
+  - hash:
+      serializedVersion: 2
       Hash: 73a192983be3e500d8b4b33e82295680
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -428,13 +489,19 @@ ScriptsOnlyBuild:
     className: MarkerTrack
   - hash:
       serializedVersion: 2
+      Hash: 750d0feb4daea1d8d19e36c778d76c10
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Cooldown
+  - hash:
+      serializedVersion: 2
       Hash: d791aa6007fa3640be1164ea75bb087d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_StyleSheet
   - hash:
       serializedVersion: 2
-      Hash: 242d3ec7349ea67e92531e3bde0f984f
+      Hash: a0c942b04784f67f667a4a1ae77c4d0c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -444,6 +511,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TextMeshPro
+  - hash:
+      serializedVersion: 2
+      Hash: 387dcc5b4f53b5b4bc430ba25f4f29f8
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: AbilityBar
   - hash:
       serializedVersion: 2
       Hash: 3165968ba45c74472d279ba04455fccb
@@ -534,7 +607,19 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: fa91f0b9929c7cb56ff7ecb560f22d54
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnemyUI
+  - hash:
+      serializedVersion: 2
+      Hash: 1b6ca796c2fdaf918d3eb290eab85d60
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TopUI
   platform: 5
   scenePathNames:
   - Assets/Scenes/Test.unity
-  playerPath: C:/Users/Griz/Desktop/UnityPractice/UnityPractice/Build/OTS.exe
+  playerPath: C:/Users/Griz/Desktop/UnityPractice/Builds/OTS.exe

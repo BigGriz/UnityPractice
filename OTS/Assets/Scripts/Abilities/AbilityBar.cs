@@ -10,9 +10,12 @@ public class AbilityBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int id = 1;
         foreach (Transform child in transform)
         {
+            child.GetComponent<Ability>().id = id;
             actionBar.Add(child.gameObject);
+            id++;
         }
     }
 

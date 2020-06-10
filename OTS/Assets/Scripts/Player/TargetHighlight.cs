@@ -37,6 +37,7 @@ public class TargetHighlight : MonoBehaviour
         else
         {
             target = null;
+            GameEvents.instance.OnLoseTarget();
             Toggle(false);
         }
     }

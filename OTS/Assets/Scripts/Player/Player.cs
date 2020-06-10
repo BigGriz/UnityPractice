@@ -7,15 +7,13 @@ public class Player : MonoBehaviour
     public static Player instance;
     [HideInInspector] public PlayerTargeting targeting;
     [HideInInspector] public PlayerMovement movement;
-
-    public AbilityBar abilityBar;
-
+    
     [Header("Player Stats")]
     public float movementSpeed;
     public float range;
     public GameObject prefab;
 
-
+    #region Singleton
     private void Awake()
     {
         // Singleton
@@ -32,17 +30,12 @@ public class Player : MonoBehaviour
         targeting = GetComponent<PlayerTargeting>();
         movement = GetComponent<PlayerMovement>();
     }
+    #endregion Singleton
 
     void Update()
     {
         // Check for Keys
         GetAbilityKeys();
-    }
-
-    // Use Ability
-    void UseAbility(int _slot)
-    {
-        abilityBar.actionBar[_slot].GetComponent<Ability>().UseAbility();
     }
 
     // Check Num Keys
@@ -52,11 +45,11 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(number.ToString()))
             {
-                UseAbility(number - 1);
+                // Use Ability
+                GameEvents.instance.UseAbility(number);
                 return;
             }
         }
-
         return;
     }
 }

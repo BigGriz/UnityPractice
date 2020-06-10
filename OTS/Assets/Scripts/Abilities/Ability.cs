@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class Ability : MonoBehaviour
 {
-    [HideInInspector] public PlayerTargeting targeting;
+    [HideInInspector] public int id;
     private Cooldown cooldownUI;
-
     [Header("Setup Fields")]
     public Sprite abilitySprite;
     public GameObject projectilePrefab;
@@ -21,43 +20,52 @@ public class Ability : MonoBehaviour
         GetComponent<Image>().sprite = abilitySprite;
     }
     private void Start()
+    {   
+        // Set Event Callback
+        GameEvents.instance.useAbility += UseAbility;
+    }
+    private void OnDestroy()
     {
-        targeting = Player.instance.targeting;
+        // Cleanup Callbacks
+        GameEvents.instance.useAbility -= UseAbility;
     }
     #endregion Setup
 
     // Use Ability
-    public void UseAbility()
+    public void UseAbility(int _id, GameObject _target)
     {
-        // Check if Target & Off Cooldown
-        if (cooldownUI.Ready() && targeting.target)
+        if (_id == this.id)
         {
-            // Check for Line of Sight
-            if (CheckLOS())
+            // Check if Target & Off Cooldown
+            if (cooldownUI.Ready() && _target)
             {
-                cooldownUI.Begin(cooldown);
-                Projectile temp = Instantiate(projectilePrefab, Player.instance.transform.position, Player.instance.transform.rotation).GetComponent<Projectile>();
-                temp.Seek(targeting.target);
+                // Check for Line of Sight
+                if (CheckLOS(_target))
+                {
+                    cooldownUI.Begin(cooldown);
+                    Projectile temp = Instantiate(projectilePrefab, Player.instance.transform.position, Player.instance.transform.rotation).GetComponent<Projectile>();
+                    temp.Seek(_target);
+                }
             }
-        }
-        // Still on CD
-        else if (!cooldownUI.Ready())
-        {
-            Debug.Log("On Cooldown");
-        }
-        // No Target
-        else
-        {
-            Debug.Log("No Target");
+            // Still on CD
+            else if (!cooldownUI.Ready())
+            {
+                Debug.Log("On Cooldown");
+            }
+            // No Target
+            else
+            {
+                Debug.Log("No Target");
+            }
         }
     }
 
     // Ensure LOS to Target
-    bool CheckLOS()
+    bool CheckLOS(GameObject _target)
     {
         // Grab all Objects between Target & Self
         RaycastHit[] hits;
-        hits = Physics.RaycastAll(Player.instance.transform.position, targeting.target.transform.position - Player.instance.transform.position, Mathf.Infinity);
+        hits = Physics.RaycastAll(Player.instance.transform.position, _target.transform.position - Player.instance.transform.position, Mathf.Infinity);
         // Check if any are Environmental/Blocking
         for (int i = 0; i < hits.Length; i++)
         {
