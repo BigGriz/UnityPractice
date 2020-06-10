@@ -7,37 +7,47 @@ using UnityEngine.EventSystems;
 public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [HideInInspector] public int id;
-    private Cooldown cooldownUI;
     [Header("Setup Fields")]
     public Sprite abilitySprite;
     public GameObject projectilePrefab;
+    public Image imageCooldown;
+
+    public AbilityStats stats;
     [Header("Ability Stats")]
     public float cooldown;
+    public float manaCost;
     new public string name;
 
-    public Vector3 local;
-    public bool dragging;
+    private Vector3 local;
+    private bool dragging;
 
     #region Setup
     private void Awake()
     {
-        cooldownUI = GetComponentInChildren<Cooldown>();
         GetComponent<Image>().sprite = abilitySprite;
-        cooldownUI.gameObject.GetComponent<Image>().sprite = abilitySprite;
+        imageCooldown.sprite = abilitySprite;
     }
     private void Start()
     {   
         // Set Event Callback
         GameEvents.instance.useAbility += UseAbility;
-        GameEvents.instance.setCooldowns += SetCooldowns;
     }
     private void OnDestroy()
     {
         // Cleanup Callbacks
         GameEvents.instance.useAbility -= UseAbility;
-        GameEvents.instance.setCooldowns -= SetCooldowns;
     }
     #endregion Setup
+
+    private void Update()
+    {
+        imageCooldown.fillAmount = stats.cooldown / cooldown;
+    }
+
+    public bool Ready()
+    {
+        return (stats.cooldown <= 0);
+    }
 
     // Button Press
     public void ButtonUse()
@@ -54,18 +64,19 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
         if (_id == this.id)
         {
             // Check if Target & Off Cooldown
-            if (cooldownUI.Ready() && _target)
+            if (Ready() && _target)
             {
                 // Check for Line of Sight
                 if (CheckLOS(_target))
                 {
-                    GameEvents.instance.SetCooldowns(this.name);
+                    GameEvents.instance.SetCooldowns(this.name, this.cooldown);
+                    Player.instance.SpendMana(manaCost);
                     Projectile temp = Instantiate(projectilePrefab, Player.instance.transform.position, Player.instance.transform.rotation).GetComponent<Projectile>();
                     temp.Seek(_target);
                 }
             }
             // Still on CD
-            else if (!cooldownUI.Ready())
+            else if (!Ready())
             {
                 Debug.Log("On Cooldown");
             }
@@ -74,15 +85,6 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
             {
                 Debug.Log("No Target");
             }
-        }
-    }
-
-    // Set Cooldowns
-    public void SetCooldowns(string _name)
-    {
-        if (this.name == _name)
-        {
-            cooldownUI.Begin(cooldown);
         }
     }
 

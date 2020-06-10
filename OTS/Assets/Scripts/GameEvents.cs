@@ -25,6 +25,7 @@ public class GameEvents : MonoBehaviour
 
     #region Setup
     private Player player;
+    private CooldownManager cooldownManager;
     private void Start()
     {
         if (!Player.instance)
@@ -35,9 +36,11 @@ public class GameEvents : MonoBehaviour
         {
             player = Player.instance;
         }
+
+        cooldownManager = GetComponent<CooldownManager>();
     }
     #endregion Setup
-
+    [Header("Slot Moused Over")]
     public AbilitySlot mouseOver;
 
     // Enemy is Targeted
@@ -68,13 +71,9 @@ public class GameEvents : MonoBehaviour
         }
     }
     // Sets Cooldowns
-    public event Action<string> setCooldowns;
-    public void SetCooldowns(string _name)
+    public void SetCooldowns(string _name, float _time)
     {
-        if (setCooldowns != null)
-        {
-            setCooldowns(_name);
-        }
+        cooldownManager.SetCooldowns(_name, _time);
     }
     // Ability Dragged to Bar
     public event Action<int, GameObject> setAbility;

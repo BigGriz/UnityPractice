@@ -11,6 +11,12 @@ public class Player : MonoBehaviour
     [Header("Player Stats")]
     public float movementSpeed;
     public float range;
+    [HideInInspector] public float health;
+    public float maxHealth;
+    [HideInInspector] public float mana;
+    public float maxMana;
+
+
     public GameObject prefab;
 
     #region Singleton
@@ -29,6 +35,8 @@ public class Player : MonoBehaviour
 
         targeting = GetComponent<PlayerTargeting>();
         movement = GetComponent<PlayerMovement>();
+        health = maxHealth;
+        mana = maxMana;
     }
     #endregion Singleton
 
@@ -38,7 +46,12 @@ public class Player : MonoBehaviour
         GetAbilityKeys();
         // Check for Hotkeys
         GetHotKeys();
+    }
 
+    // Spend Mana for Spell
+    public void SpendMana(float _cost)
+    {
+        mana -= _cost;
     }
 
     // Check Num Keys
