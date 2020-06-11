@@ -13,6 +13,7 @@ public class MiddleUI : MonoBehaviour
     {
         // UI Elements
         spellBook.SetActive(false);
+        character.SetActive(false);
         // Setup Callbacks
         GameEvents.instance.toggleMenu += ToggleMenu;
     }
@@ -37,8 +38,8 @@ public class MiddleUI : MonoBehaviour
         }
     }
     // Buttons
-    public void CloseMenu(GameObject _menu)
+    public void ToggleMenuButton(GameObject _menu)
     {
-        _menu.SetActive(false);
+        _menu.SetActive(!_menu.activeSelf);
     }
 }
