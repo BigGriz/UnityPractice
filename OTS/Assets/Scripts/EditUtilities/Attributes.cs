@@ -25,7 +25,7 @@ public class DrawIfAttribute : PropertyAttribute
     }
 }
 
-/// Draws the field/property ONLY if the compared property compared by the comparison type with the value of comparedValue returns true.
+/// Draws the field/property ONLY if the compared property compared by the comparison type with the value of comparedValue returns false.
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
 public class DrawIfNotAttribute : PropertyAttribute
 {

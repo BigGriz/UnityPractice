@@ -1,6 +1,14 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+public enum Show
+{
+    Setup,
+    Stats,
+    Debug,
+    All
+}
+
 [CustomPropertyDrawer(typeof(DrawIfAttribute))]
 public class DrawIfPropertyDrawer : PropertyDrawer
 {
