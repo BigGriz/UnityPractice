@@ -28,13 +28,8 @@ public enum EquipSlot
 
 public class Item : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public Show properties;
-
-    //[Header("Setup Fields")]
-    [DrawIf("properties", Show.Setup)]
+    [Header("Setup Fields")]
     public Sprite itemSprite;
-    [DrawIf("properties", Show.Setup)]
-    public bool equipped;
     [Header("Item Stats")]
     public ItemStats itemStats;
     new public string name;
@@ -67,13 +62,23 @@ public class Item : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        GetComponent<Image>().raycastTarget = true;
-        GetComponent<RectTransform>().anchoredPosition = local;
-        dragging = false;
         // Check if Equipment
-        if (type == ItemType.Equipment)
+        if (GameEvents.instance.mouseOverEquipment != null)
         {
             GameEvents.instance.SetItem(this.gameObject);
         }
+        else if(GameEvents.instance.mouseOverBackpack != null)
+        {
+            GameEvents.instance.SwapItem(this.gameObject);
+        }
+        else
+        {
+            // Do Nothing
+        }
+
+        // Need to set Anchors in Above Scripts
+        GetComponent<Image>().raycastTarget = true;
+        GetComponent<RectTransform>().anchoredPosition = local;
+        dragging = false;
     }
 }

@@ -8,7 +8,8 @@ public class UIRaycaster : MonoBehaviour
 {
     [Header("UI Raycasting")]
     public GraphicRaycaster abilityRaycaster;
-    public GraphicRaycaster itemRaycaster;
+    public GraphicRaycaster equipmentRaycaster;
+    public GraphicRaycaster backpackRaycaster;
     PointerEventData m_PointerEventData;
     EventSystem m_EventSystem;
 
@@ -24,8 +25,9 @@ public class UIRaycaster : MonoBehaviour
         //Set Pointer Event Position to mouse position
         m_PointerEventData.position = Input.mousePosition;
 
-        CheckItems();
-        CheckAbilities();   
+        CheckEquipment();
+        CheckAbilities();
+        CheckBackPack();
     }
 
     void CheckAbilities()
@@ -49,13 +51,13 @@ public class UIRaycaster : MonoBehaviour
         GameEvents.instance.mouseOverAbility = null;
     }
 
-    void CheckItems()
+    void CheckEquipment()
     {
         //Create a list of Raycast Results
-        List<RaycastResult> itemResults = new List<RaycastResult>();
-        itemRaycaster.Raycast(m_PointerEventData, itemResults);
+        List<RaycastResult> equipmentResults = new List<RaycastResult>();
+        equipmentRaycaster.Raycast(m_PointerEventData, equipmentResults);
         //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-        foreach (RaycastResult n in itemResults)
+        foreach (RaycastResult n in equipmentResults)
         {
             //Debug.Log(result.gameObject.name);
 
@@ -63,11 +65,32 @@ public class UIRaycaster : MonoBehaviour
             ItemSlot temp = n.gameObject.GetComponent<ItemSlot>();
             if (temp)
             {
-                GameEvents.instance.mouseOverItem = temp;
+                GameEvents.instance.mouseOverEquipment = temp;
                 return;
             }
         }
-        GameEvents.instance.mouseOverItem = null;
+        GameEvents.instance.mouseOverEquipment = null;
+    }
+
+    void CheckBackPack()
+    {
+        //Create a list of Raycast Results
+        List<RaycastResult> backpackResults = new List<RaycastResult>();
+        backpackRaycaster.Raycast(m_PointerEventData, backpackResults);
+        //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
+        foreach (RaycastResult n in backpackResults)
+        {
+            //Debug.Log(result.gameObject.name);
+
+            // Check it's an item hovered over
+            ItemSlot temp = n.gameObject.GetComponent<ItemSlot>();
+            if (temp)
+            {
+                GameEvents.instance.mouseOverBackpack = temp;
+                return;
+            }
+        }
+        GameEvents.instance.mouseOverBackpack = null;
     }
 
 }

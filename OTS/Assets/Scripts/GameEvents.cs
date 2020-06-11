@@ -42,7 +42,8 @@ public class GameEvents : MonoBehaviour
     #endregion Setup
     [Header("Slot Moused Over")]
     public AbilitySlot mouseOverAbility;
-    public ItemSlot mouseOverItem;
+    public ItemSlot mouseOverEquipment;
+    public ItemSlot mouseOverBackpack;
 
     // Enemy is Targeted
     public event Action<Enemy> onGetTarget;
@@ -111,9 +112,30 @@ public class GameEvents : MonoBehaviour
     public event Action<int, GameObject> setItem;
     public void SetItem(GameObject _item)
     {
-        if (setItem != null && mouseOverItem != null)
+        if (setItem != null && mouseOverEquipment != null)
         {
-            setItem(mouseOverItem.id, _item);
+            setItem(mouseOverEquipment.id, _item);
         }
     }
+
+    // Item Dragged to Inventory
+    public event Action<int, GameObject> swapItem;
+    public void SwapItem(GameObject _item)
+    {
+        if (swapItem != null && mouseOverBackpack != null)
+        {
+            swapItem(mouseOverBackpack.id, _item);
+        }
+    }
+
+    // Switches Items
+    public event Action<int, GameObject> switchItem;
+    public void SwitchItem(int _id, GameObject _item)
+    {
+        if (switchItem != null)
+        {
+            switchItem(_id, _item);
+        }
+    }
+
 }
