@@ -1,0 +1,5 @@
+Name,Prefix,BaseDamage,PercentDamage,AttackSpeed,BaseCrit,PercentCrit,EnergyPerSec,EnergyOnKill,AutoUpgrade,BonusReward,BonusXP,,,,,,,,
+Serrated,TRUE,2,0,0,0,0,0,0,FALSE,0,0,
+Fine,TRUE,0,0.2,0,0,0,0,0,FALSE,0,0,
+Quick,FALSE,0,0,0.2,0,0,0,0,FALSE,0,0,
+Critical,FALSE,0,0,0,0.01,0,0,0,FALSE,0,0,
