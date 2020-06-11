@@ -11,13 +11,13 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     public Sprite abilitySprite;
     public GameObject projectilePrefab;
     public Image imageCooldown;
-
+    // SO for Cooldowns
     public AbilityStats stats;
     [Header("Ability Stats")]
     public float cooldown;
     public float manaCost;
     new public string name;
-
+    // Drag n Drop
     private Vector3 local;
     private bool dragging;
 

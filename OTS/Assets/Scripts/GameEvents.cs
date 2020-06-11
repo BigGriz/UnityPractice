@@ -41,7 +41,8 @@ public class GameEvents : MonoBehaviour
     }
     #endregion Setup
     [Header("Slot Moused Over")]
-    public AbilitySlot mouseOver;
+    public AbilitySlot mouseOverAbility;
+    public ItemSlot mouseOverItem;
 
     // Enemy is Targeted
     public event Action<Enemy> onGetTarget;
@@ -61,6 +62,7 @@ public class GameEvents : MonoBehaviour
             onLoseTarget();
         }
     }
+
     // Ability Key is Pressed
     public event Action<int, GameObject> useAbility;
     public void UseAbility(int _id)
@@ -75,13 +77,14 @@ public class GameEvents : MonoBehaviour
     {
         cooldownManager.SetCooldowns(_name, _time);
     }
+
     // Ability Dragged to Bar
     public event Action<int, GameObject> setAbility;
     public void SetAbility(GameObject _ability)
     {
-        if (setAbility != null && mouseOver != null)
+        if (setAbility != null && mouseOverAbility != null)
         {
-            setAbility(mouseOver.id, _ability);
+            setAbility(mouseOverAbility.id, _ability);
         }
     }
     // Ability Dragged off Bar
@@ -93,13 +96,24 @@ public class GameEvents : MonoBehaviour
             clearAbility(_id);
         }
     }
-    // Change this to all Menus?
+
+    // Toggle Menu w/ HotKeys
     public event Action<KeyCode> toggleMenu;
     public void ToggleMenu(KeyCode _key)
     {
         if (toggleMenu != null)
         {
             toggleMenu(_key);
+        }
+    }
+
+    // Item Dragged to Inventory
+    public event Action<int, GameObject> setItem;
+    public void SetItem(GameObject _item)
+    {
+        if (setItem != null && mouseOverItem != null)
+        {
+            setItem(mouseOverItem.id, _item);
         }
     }
 }

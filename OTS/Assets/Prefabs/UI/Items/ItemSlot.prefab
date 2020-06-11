@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2525996568887196129}
   - component: {fileID: 820076093052856515}
   - component: {fileID: 5232185314464538451}
-  - component: {fileID: 7219946922668950384}
+  - component: {fileID: 782445882433680648}
   m_Layer: 5
   m_Name: ItemSlot
   m_TagString: Untagged
@@ -59,14 +59,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.078431375}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7181e647ffa20bf409269aa80776d052, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7219946922668950384
+--- !u!114 &782445882433680648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,9 +84,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2509772238112581231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 486bfaf1217287341b3472260905d1c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c71c7f2bc8077a4c8af1c37fa88b7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ability: {fileID: 0}
   id: 0
-  spellBook: 0
+  item: {fileID: 0}
+  slot: 0

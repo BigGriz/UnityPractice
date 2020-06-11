@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class MiddleUI : MonoBehaviour
 {
-    // Change this to all Tabs in Future
+    // Change this to a list of ids in future
     public GameObject spellBook;
     public GameObject character;
+    public GameObject backpack;
 
     #region Setup
     private void Start()
@@ -14,6 +15,7 @@ public class MiddleUI : MonoBehaviour
         // UI Elements
         spellBook.SetActive(false);
         character.SetActive(false);
+        backpack.SetActive(false);
         // Setup Callbacks
         GameEvents.instance.toggleMenu += ToggleMenu;
     }
@@ -35,6 +37,10 @@ public class MiddleUI : MonoBehaviour
         if (_key == KeyCode.C)
         {
             character.SetActive(!character.activeSelf);
+        }
+        if (_key == KeyCode.B)
+        {
+            backpack.SetActive(!backpack.activeSelf);
         }
     }
     // Buttons

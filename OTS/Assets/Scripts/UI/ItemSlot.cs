@@ -4,61 +4,53 @@ using UnityEngine;
 
 public class ItemSlot : MonoBehaviour
 {
-    public Item item;
     public int id;
-    public bool spellBook;
+    public Item item;
+    public EquipSlot slot;
 
     private void Start()
     {
-        if (GetComponentInChildren<Ability>())
+        if (GetComponentInChildren<Item>())
         {
             item = GetComponentInChildren<Item>();
         }
         // Set Event Callback
-       /* GameEvents.instance.setAbility += SetAbility;
-        GameEvents.instance.clearAbility += ClearAbility;*/
+        GameEvents.instance.setItem += SetItem;
     }
     private void OnDestroy()
     {
         // Cleanup Callbacks
-       /* GameEvents.instance.setAbility -= SetAbility;
-        GameEvents.instance.clearAbility -= ClearAbility;*/
+        GameEvents.instance.setItem -= SetItem;
     }
 
-
-    public void SetId(int _id)
-    {
-        id = _id;
-        if (item)
-        {
-            item.id = id;
-        }
-    }
-
-    public void SetAbility(int _id, GameObject _object)
+    public void SetItem(int _id, GameObject _object)
     {
         if (id == _id)
         {
             if (item != null)
             {
+                // Swap into inventory
                 Destroy(item.gameObject);
             }
 
-            Item temp = Instantiate(_object, this.transform).GetComponent<Item>();
-            if (temp)
+            // Check Correct Slot
+            if (_object.GetComponent<Item>().slot == slot)
             {
-                item = temp;
-                item.id = id;
+                Item temp = Instantiate(_object, this.transform).GetComponent<Item>();
+                if (temp)
+                {
+                    item = temp;
+                }
             }
         }
     }
 
-    public void ClearAbility(int _id)
+    public void SetId(int _id)
     {
-        if (id == _id)
+        id = _id;
+        /*if (item)
         {
-            Destroy(item.gameObject);
-            item = null;
-        }
+            item.id = id;
+        }*/
     }
 }
