@@ -4825,6 +4825,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4248497952739142541, guid: e606f6d9b39648042885dd8965880443, type: 3}
+      propertyPath: rarity
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7447559367667813342, guid: e606f6d9b39648042885dd8965880443, type: 3}
       propertyPath: m_Name
       value: Helm
@@ -6157,6 +6161,10 @@ PrefabInstance:
     - target: {fileID: 3995808927530107005, guid: 30b3c5152b38bb744933ce9afc1f4e8a, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248497952739142541, guid: 30b3c5152b38bb744933ce9afc1f4e8a, type: 3}
+      propertyPath: rarity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7447559367667813342, guid: 30b3c5152b38bb744933ce9afc1f4e8a, type: 3}
       propertyPath: m_Name

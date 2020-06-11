@@ -30,6 +30,34 @@ public class AffixMaster : MonoBehaviour
     public List<Affix> prefixes;
     public List<Affix> suffixes;
 
+    // Check type Later
+    public Affix GetRandomPrefix()
+    {
+        if (prefixes.Count == 0)
+        {
+            Debug.LogError("AffixMaster has no Prefixes!");
+            return null;
+        }
+        else
+        {
+            int rand = Random.Range(0, prefixes.Count);
+            return (prefixes[rand]);
+        }
+    }
+    public Affix GetRandomSuffix()
+    {
+        if (suffixes.Count == 0)
+        {
+            Debug.LogError("AffixMaster has no Suffixes!");
+            return null;
+        }
+        else
+        {
+            int rand = Random.Range(0, suffixes.Count);
+            return (suffixes[rand]);
+        }
+    }
+
     public void SortAffixes()
     {
         foreach (Affix n in affixes)
