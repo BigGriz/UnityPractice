@@ -40,16 +40,16 @@ public class Item : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     [Header("Setup Fields")]
     public Sprite itemSprite;
     public bool equipped;
-    //public ItemStats itemStats;
+    public ItemStats itemStats;
     [Header("Item Stats")]
     new public string name;
     public ItemType type;
     public EquipSlot slot;
     public Rarity rarity;
 
-    [Header("Affixes")]
+    /*[Header("Affixes")]
     public List<Affix> prefixes;
-    public List<Affix> suffixes;
+    public List<Affix> suffixes;*/
 
     // Drag n Drop
     private Vector3 local;
@@ -57,13 +57,16 @@ public class Item : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     private void Start()
     {
+        itemStats = ScriptableObject.CreateInstance("ItemStats") as ItemStats;
+        itemStats.Setup(rarity);
+
         // Change this to random between max & min of rarity - pre existing mods;
-        for (int i = 0; i < (int)rarity; i++)
+        /*for (int i = 0; i < (int)rarity; i++)
         {
             // Change to take in type of item
             prefixes.Add(AffixMaster.instance.GetRandomPrefix());
             suffixes.Add(AffixMaster.instance.GetRandomSuffix());
-        }
+        }*/
     }
 
     public void OnBeginDrag(PointerEventData eventData)
