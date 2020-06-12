@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System.Reflection;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,4 +31,29 @@ public class Affix : ScriptableObject
     public bool autoUpgrade;
     [Header("Affix Tier")]
     public int tier = 1;
+    // List of all Properties
+    public List<object> stats;
+
+    public void Setup()
+    {
+        stats = new List<object>();
+        SetupList();
+    }
+
+    public void SetupList()
+    {
+        // Clear List
+        stats.Clear();
+        // Get all Variables and Store Values in a List
+        var fields = this.GetType().GetFields();
+        foreach (var n in fields)
+        {
+            stats.Add(n.GetValue(this));
+        }
+    }
+    public List<object> GetList()
+    {
+        // Return Values List
+        return (stats);
+    }
 }
