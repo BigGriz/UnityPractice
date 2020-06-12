@@ -7,4 +7,7 @@ public class AbilityMods : ScriptableObject
 {
     public int numChains;
     public float chainRange;
+    public bool explodes;
+    public float explosionRadius;
+    public Sprite sprite;
 }

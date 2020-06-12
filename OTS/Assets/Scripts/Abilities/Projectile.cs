@@ -11,15 +11,25 @@ public class Projectile : MonoBehaviour
     public bool explodes;
     public int numChains;
     public float chainRange;
-    public float splashRadius;
+    public float explosionRadius;
     public float damage;
 
     public void Setup(List<AbilityMods> mods)
     {
+        // Go through Mod List
         foreach(AbilityMods n in mods)
         {
-            numChains += n.numChains;
-            chainRange = Mathf.Max(chainRange, n.chainRange);
+            // Check if Null
+            if (n)
+            {
+                numChains += n.numChains;
+                chainRange = Mathf.Max(chainRange, n.chainRange);
+                if (n.explodes)
+                {
+                    explodes = true;
+                    explosionRadius = Mathf.Max(explosionRadius, n.explosionRadius);
+                }
+            }
         }
     }
 
@@ -136,7 +146,7 @@ public class Projectile : MonoBehaviour
     void Explode()
     {
         // Get Nearby Enemies
-        Collider[] hitObjects = Physics.OverlapSphere(transform.position, splashRadius);
+        Collider[] hitObjects = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider collider in hitObjects)
         {
             if (collider.tag == "Enemy")

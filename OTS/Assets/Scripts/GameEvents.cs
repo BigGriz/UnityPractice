@@ -138,4 +138,13 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+    public event Action getAbilityMods;
+    public void GetAbilityMods()
+    {
+        if (getAbilityMods != null)
+        {
+            getAbilityMods();
+        }
+    }
+
 }

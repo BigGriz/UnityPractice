@@ -11,7 +11,8 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     public Sprite abilitySprite;
     public GameObject projectilePrefab;
     public Image imageCooldown;
-    // SO for Cooldowns
+    public GameObject modsWindow;
+    public bool spellBook = false;
     public AbilityStats stats;
     [Header("Ability Stats")]
     public float cooldown;
@@ -22,6 +23,7 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     private bool dragging;
 
     public List<AbilityMods> mods;
+    public ModSlot[] slots;
 
     #region Setup
     private void Awake()
@@ -33,11 +35,19 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     {   
         // Set Event Callback
         GameEvents.instance.useAbility += UseAbility;
+        GameEvents.instance.getAbilityMods += GetMods;
+        // Resize mods to account for number of mod slots
+        slots = GetComponentsInChildren<ModSlot>();
+        if (!spellBook)
+        {
+            modsWindow.SetActive(false);
+        }
     }
     private void OnDestroy()
     {
         // Cleanup Callbacks
         GameEvents.instance.useAbility -= UseAbility;
+        GameEvents.instance.getAbilityMods -= GetMods;
     }
     #endregion Setup
 
@@ -60,11 +70,21 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
         }
     }
 
-    public void GetMod(ModSlot _slot)
+    public void GetMods()
     {
-        if (_slot.mod)
+        // Go through each slot and check if there's an active mod
+        for (int i = 0; i < slots.Length; i++)
         {
-            mods.Add(_slot.mod);
+            // SafetyCheck
+            if (mods.Count <= i)
+            {
+                mods.Add(slots[i].activeMod);
+            }
+            else
+            {
+                mods[i] = slots[i].activeMod;
+            }
+            
         }
     }
 
@@ -128,12 +148,20 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     public void OnDrag(PointerEventData eventData)
     {
         if (dragging)
-        {
+        {        
+            // Hide Mods Window while Dragging
+            modsWindow.SetActive(false);
             transform.position = Input.mousePosition;
         }
     }
     public void OnEndDrag(PointerEventData eventData)
     {
+        // Turn Window Back On
+        if (spellBook)
+        {
+            modsWindow.SetActive(true);
+        }
+
         GetComponent<Image>().raycastTarget = true;
         GetComponent<RectTransform>().anchoredPosition = local;
         dragging = false;

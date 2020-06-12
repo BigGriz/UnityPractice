@@ -50,6 +50,7 @@ public class AbilitySlot : MonoBehaviour
             {
                 ability = temp;
                 ability.id = id;
+                ability.spellBook = false;
             }
         }
     }
