@@ -60,6 +60,14 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
         }
     }
 
+    public void GetMod(ModSlot _slot)
+    {
+        if (_slot.mod)
+        {
+            mods.Add(_slot.mod);
+        }
+    }
+
     // Use Ability
     public void UseAbility(int _id, GameObject _target)
     {
