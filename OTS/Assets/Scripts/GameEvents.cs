@@ -25,7 +25,7 @@ public class GameEvents : MonoBehaviour
 
     #region Setup
     private Player player;
-    private CooldownManager cooldownManager;
+    private ModMaster modMaster;
     private void Start()
     {
         if (!Player.instance)
@@ -37,7 +37,7 @@ public class GameEvents : MonoBehaviour
             player = Player.instance;
         }
 
-        cooldownManager = GetComponent<CooldownManager>();
+        modMaster = GetComponent<ModMaster>();
     }
     #endregion Setup
     [Header("Slot Moused Over")]
@@ -76,7 +76,7 @@ public class GameEvents : MonoBehaviour
     // Sets Cooldowns
     public void SetCooldowns(string _name, float _time)
     {
-        cooldownManager.SetCooldowns(_name, _time);
+        modMaster.SetCooldowns(_name, _time);
     }
 
     // Ability Dragged to Bar

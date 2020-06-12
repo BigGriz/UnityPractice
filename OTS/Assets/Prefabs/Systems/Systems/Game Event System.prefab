@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6760821041388537022}
   - component: {fileID: 6760821041388537008}
-  - component: {fileID: 6760821041388537023}
+  - component: {fileID: -2455515003071354867}
   m_Layer: 0
   m_Name: Game Event System
   m_TagString: Untagged
@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseOverAbility: {fileID: 0}
-  mouseOverItem: {fileID: 0}
---- !u!114 &6760821041388537023
+  mouseOverEquipment: {fileID: 0}
+  mouseOverBackpack: {fileID: 0}
+--- !u!114 &-2455515003071354867
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,8 +56,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6760821041388537020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46d04661c5254cf46a431cb62e54e220, type: 3}
+  m_Script: {fileID: 11500000, guid: de9b53b0b7578cd4a8516bab265af2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityCooldowns:
+  abilities:
   - {fileID: 11400000, guid: a5452cb0e68bf0442925fed4644d4afe, type: 2}

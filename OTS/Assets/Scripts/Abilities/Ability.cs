@@ -72,19 +72,21 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
 
     public void GetMods()
     {
-        // Go through each slot and check if there's an active mod
-        for (int i = 0; i < slots.Length; i++)
+        // Get Mods from SpellBook
+        if (spellBook)
         {
-            // SafetyCheck
-            if (mods.Count <= i)
+            for (int i = 0; i < slots.Length; i++)
             {
-                mods.Add(slots[i].activeMod);
+                // SafetyCheck
+                if (stats.mods.Count <= i)
+                {
+                    stats.mods.Add(slots[i].activeMod);
+                }
+                else
+                {
+                    stats.mods[i] = slots[i].activeMod;
+                }
             }
-            else
-            {
-                mods[i] = slots[i].activeMod;
-            }
-            
         }
     }
 
@@ -102,7 +104,7 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
                     GameEvents.instance.SetCooldowns(this.name, this.cooldown);
                     Player.instance.SpendMana(manaCost);
                     Projectile temp = Instantiate(projectilePrefab, Player.instance.transform.position, Player.instance.transform.rotation).GetComponent<Projectile>();
-                    temp.Setup(mods);
+                    temp.Setup(stats.mods);
                     temp.Seek(_target);
                 }
             }
