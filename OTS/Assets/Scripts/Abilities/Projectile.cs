@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +9,19 @@ public class Projectile : MonoBehaviour
     public float projectileSpeed = 20.0f;
    // public Debuff debuff;
     public bool explodes;
+    public int numChains;
+    public float chainRange;
     public float splashRadius;
     public float damage;
+
+    public void Setup(List<AbilityMods> mods)
+    {
+        foreach(AbilityMods n in mods)
+        {
+            numChains += n.numChains;
+            chainRange = Mathf.Max(chainRange, n.chainRange);
+        }
+    }
 
     // Set Target to Seek
     public void Seek(GameObject _target)
@@ -79,16 +91,53 @@ public class Projectile : MonoBehaviour
         {
             Damage(target);
         }
-        // Done w/ Projectile
-        Destroy();
+        // Check if Chains
+        if (!Chain())
+        {
+            // Done w/ Projectile
+            Destroy();
+        }
+    }
+
+    // Custom Sort by Distance
+     public int DistanceSort(Collider _a, Collider _b)
+     {
+         return (transform.position - _a.transform.position).sqrMagnitude.
+             CompareTo((transform.position - _b.transform.position).sqrMagnitude);
+     }
+
+    public bool Chain()
+    {
+        if (numChains > 0)
+        {
+            // Decrement Number of Remaining Chains
+            numChains--;
+            // Get nearby Objects - Sort by Distance
+            Collider[] hitObjects = Physics.OverlapSphere(transform.position, chainRange);
+            Array.Sort(hitObjects, DistanceSort);
+            // Iterate Through Nearest Objects
+            foreach (Collider collider in hitObjects)
+            {
+                // Check for different Enemy
+                if (collider.tag == "Enemy" && collider.gameObject != target.gameObject)
+                {
+                    // Damage Enemy
+                    Seek(collider.gameObject);
+                    // Found Target
+                    return true;
+                }
+            }
+        }
+        // No Nearby Target
+        return false;
     }
 
     // For AoE Damage
     void Explode()
     {
         // Get Nearby Enemies
-        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(transform.position, splashRadius);
-        foreach (Collider2D collider in hitObjects)
+        Collider[] hitObjects = Physics.OverlapSphere(transform.position, splashRadius);
+        foreach (Collider collider in hitObjects)
         {
             if (collider.tag == "Enemy")
             {
@@ -96,8 +145,6 @@ public class Projectile : MonoBehaviour
                 Damage(collider.transform);
             }
         }
-        // Done w/ Projectile
-        Destroy();
     }
 
     // Damage

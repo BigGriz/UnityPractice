@@ -21,6 +21,8 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
     private Vector3 local;
     private bool dragging;
 
+    public List<AbilityMods> mods;
+
     #region Setup
     private void Awake()
     {
@@ -72,6 +74,7 @@ public class Ability : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragH
                     GameEvents.instance.SetCooldowns(this.name, this.cooldown);
                     Player.instance.SpendMana(manaCost);
                     Projectile temp = Instantiate(projectilePrefab, Player.instance.transform.position, Player.instance.transform.rotation).GetComponent<Projectile>();
+                    temp.Setup(mods);
                     temp.Seek(_target);
                 }
             }

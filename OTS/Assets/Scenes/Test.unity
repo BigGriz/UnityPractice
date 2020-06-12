@@ -1362,6 +1362,18 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7389552329086883803, guid: 8cf6997413f36924cb4bd7fcd3a6ccec, type: 3}
+      propertyPath: mods.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389552329086883803, guid: 8cf6997413f36924cb4bd7fcd3a6ccec, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 5778522320898475606, guid: 22925cc3564729342a38efa82819a55e, type: 3}
+    - target: {fileID: 7389552329086883803, guid: 8cf6997413f36924cb4bd7fcd3a6ccec, type: 3}
+      propertyPath: mods.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7630674e201f1e241a34ab29d75e1c3b, type: 2}
     - target: {fileID: 7577104566865788400, guid: 8cf6997413f36924cb4bd7fcd3a6ccec, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
@@ -1817,7 +1829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1439137268192518138, guid: 672f84087a19de7488f672fd0c28b5aa, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Enemy2
       objectReference: {fileID: 0}
     - target: {fileID: 1439137268192518138, guid: 672f84087a19de7488f672fd0c28b5aa, type: 3}
       propertyPath: m_Layer
@@ -1995,7 +2007,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1439137268192518138, guid: 672f84087a19de7488f672fd0c28b5aa, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Enemy1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672f84087a19de7488f672fd0c28b5aa, type: 3}
