@@ -42,6 +42,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            GameEvents.instance.ToggleAOE();
+        }
+
         // Check for Abilities
         GetAbilityKeys();
         // Check for Hotkeys

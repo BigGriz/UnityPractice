@@ -137,13 +137,23 @@ public class GameEvents : MonoBehaviour
             switchItem(_id, _item);
         }
     }
-
+    // Get Mods on Items
     public event Action getAbilityMods;
     public void GetAbilityMods()
     {
         if (getAbilityMods != null)
         {
             getAbilityMods();
+        }
+    }
+
+    // Toggle AoE Targeting
+    public event Action toggleAOE;
+    public void ToggleAOE()
+    {
+        if (toggleAOE != null)
+        {
+            toggleAOE();
         }
     }
 
